@@ -5,6 +5,7 @@ import {Platform, StyleSheet, Text, View, Image,TextInput, TouchableHighlight, A
 Dimensions, AsyncStorage, ScrollView, BackHandler } from 'react-native';
 import {SearchBar, Card, Icon, Header, Button} from 'react-native-elements';
 import RF from 'react-native-responsive-fontsize';
+import Modal from "react-native-modal";
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -21,7 +22,8 @@ export default class Home extends Component {
       restaurantDetails: [],
       restaurantId: '',
       navBarIconClr: 'white',
-      onIncomingDelivery: true
+      onIncomingDelivery: true,
+      isErrorPopup: false
     };
     
   }
@@ -45,9 +47,26 @@ export default class Home extends Component {
     this.props.navigation.navigate('OngoingDelivery', {screen: 'OngoingDelivery'} );
   }
 
+  _onReject = () => {
+    // this.setState({onIncomingDelivery: false});
+    this.errorPopupShow();
+  }
+
+  errorPopupShow = () => {
+    this.setState({
+        isErrorPopup: true
+    })
+}
+
+errorPopupHide = () => {
+    this.setState({
+        isErrorPopup: false
+    })
+}
+
   render() {
 
-    const {navigate} = this.props.navigation
+    // const {navigate} = this.props.navigation
 
     return (
       <View style={styles.container}>
@@ -64,7 +83,7 @@ export default class Home extends Component {
           // centerComponent={{text: 'Home'}}
           rightComponent={{icon: 'notifications', color: this.state.navBarIconClr, onPress: () => alert('Hoi')}}
           backgroundColor='transparent'
-          outerContainerStyles={{height: RF(6), borderBottomColor: 'transparent', paddingBottom: 3}}
+          outerContainerStyles={{borderBottomColor: 'transparent', paddingBottom: 3, marginTop: -30}}
         />
 
         <View style={styles.innerContainer}>
@@ -82,7 +101,7 @@ export default class Home extends Component {
         </View>
 
         {
-          this.state.onIncomingDelivery 
+          !this.state.onIncomingDelivery 
 
           ?
 
@@ -93,7 +112,7 @@ export default class Home extends Component {
           onPress={ this._navigateOngoingDelivery }
          >
            <Image 
-             source={{uri: "https://static.thenounproject.com/png/1584715-200.png"}}
+             source={require('../../assets/images/Home/ongoing.png')}
              style={{ width: width / 2, height: height / 5, resizeMode: 'contain' }}
            />
            <Text> Ongoing Deliveries </Text>
@@ -103,7 +122,7 @@ export default class Home extends Component {
           style={{ alignItems: 'center' }}
          >
            <Image 
-             source={{uri: "https://static.thenounproject.com/png/1584715-200.png"}}
+             source={require('../../assets/images/Home/past.png')}
              style={{ width: width / 2, height: height / 5, resizeMode: 'contain' }}
            />
            <Text> Past Deliveries </Text>
@@ -135,6 +154,7 @@ export default class Home extends Component {
 
                 <TouchableOpacity
                   style={{ width: width / 4, height: height / 16, borderRadius: 5, backgroundColor: '#c91010', justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginHorizontal: 10 }}
+                  onPress={this._onReject}
                 >
                   <Text style={{ color: 'white', fontSize: RF(2.8) }}> Reject </Text>
                 </TouchableOpacity>
@@ -154,11 +174,31 @@ export default class Home extends Component {
 
         }
 
-        
-
-        
-
-        
+        <Modal
+            isVisible={this.state.isErrorPopup}
+        >
+            <Card
+                containerStyle={{ borderRadius: 5 }}
+            >
+                <View style={{ alignItems: 'center' }}>
+                    <Image
+                        source={require('../../assets/images/img.png')}
+                        style={{ width: width / 2.2, height: height / 6, resizeMode: 'contain' }}
+                    />
+                    <Text style={{ fontSize: RF(3.5), fontWeight: 'bold', marginTop: 15 }}>
+                        Server Error
+                    </Text>
+                    <Text style={{ textAlign: 'center' }}>
+                        Our servers are busy at the moment. Please try again later!
+                    </Text>
+                    <TouchableOpacity 
+                        onPress={this.errorPopupHide} 
+                        style={{ marginTop: 25, paddingVertical: 8, paddingHorizontal: 15, backgroundColor: 'red', borderRadius: 5 }}>
+                        <Text style={{ color: 'white' }}>Ok</Text>
+                    </TouchableOpacity>
+                </View>
+            </Card>
+        </Modal>
 
       </View>
     );

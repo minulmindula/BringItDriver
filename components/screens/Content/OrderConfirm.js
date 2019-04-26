@@ -5,7 +5,7 @@ import {Platform, StyleSheet, Text, View, Image,TextInput, TouchableHighlight, A
 Dimensions, AsyncStorage, ScrollView } from 'react-native';
 import {SearchBar, Card, Icon, Header, Button} from 'react-native-elements';
 import RF from 'react-native-responsive-fontsize';
-// import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -31,6 +31,11 @@ export default class OrderConfirm extends Component {
       this.props.navigation.navigate('OngoingDelivery', {screen: 'OngoingDelivery'} );
   }
 
+  _rejectOrder = () => {
+    const {navigation} = this.props;
+    navigation.goBack({onIncomingDelivery: false});
+  }
+
   render() {
 
     return (
@@ -46,7 +51,7 @@ export default class OrderConfirm extends Component {
 
         <TouchableOpacity 
             style={{ alignSelf: 'flex-start', margin: 15, backgroundColor: 'white', width: 40, height: 40, borderRadius: 50, elevation: 1, justifyContent: 'center' }}
-            onPress={ () => this.props.navigation.goBack() }
+            onPress={ () => this._rejectOrder }
         >
 
             <Icon 
@@ -55,20 +60,41 @@ export default class OrderConfirm extends Component {
 
         </TouchableOpacity>
 
-        {/* <View style={{
+        <View style={{
         ...StyleSheet.absoluteFillObject
         }}>
             <MapView
                 style={{...StyleSheet.absoluteFillObject}}
                 provider={PROVIDER_GOOGLE}
                 initialRegion={{
-                    latitude: 6.927079,
-                    longitude: 79.861244,
+                    latitude: 6.876601,
+                    longitude: 79.920839,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                 }}
-            />
-        </View> */}
+            >
+
+              <MapView.Marker
+                coordinate={{
+                    latitude: 6.876601,
+                    longitude: 79.920839
+                  }}
+                title="User location"
+                description="Address"
+              />
+
+              {/* <MapView.Marker
+                coordinate={{
+                    latitude: 6.871786,
+                    longitude: 79.885707
+                  }}
+                title="Restaurant location"
+                description="Address"
+              /> */}
+
+            </MapView>
+        </View>
+
         <View style={{ flex: 1 }}>
             <Text> </Text>
         </View>
@@ -86,7 +112,7 @@ export default class OrderConfirm extends Component {
 
                         <View style={{ width: width / 2 }}>
                             <Text style={{ fontSize: RF(2.2), fontWeight: 'bold', color: '#a40000' }}> User </Text>
-                            <Text style={{ fontSize: RF(3.2), fontWeight: 'bold' }}> Test user </Text>
+                            <Text style={{ fontSize: RF(3.2), fontWeight: 'bold' }}> Minul Mindula </Text>
                         </View>
 
                     </View>
@@ -95,7 +121,7 @@ export default class OrderConfirm extends Component {
 
                         <TouchableOpacity
                             style={{ width: width / 4, height: height / 16, borderRadius: 5, backgroundColor: '#c91010', justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginHorizontal: 10 }}
-                            // onPress
+                            onPress={() => this.props.navigation.goBack()}
                         >
                             <Text style={{ color: 'white', fontSize: RF(2.8) }}> Reject </Text>
                         </TouchableOpacity>

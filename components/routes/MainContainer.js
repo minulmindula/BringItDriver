@@ -17,7 +17,7 @@ import {
 import { StackNavigator, DrawerNavigator, DrawerItems, createDrawerNavigator, createStackNavigator } from 'react-navigation';
 import {Icon} from 'react-native-elements';
 
-// import Splash from '../screens/'
+import Splash from '../screens/Welcome/Splash';
 import Login from '../screens/Authentication/Login';
 import Register from '../screens/Authentication/Register';
 import Home from '../screens/Content/Home';
@@ -88,7 +88,7 @@ const Drawer = DrawerNavigator({
 const NavigationApp = StackNavigator({
 
   //UI Navigation Map For All
-  // Splash:{ screen: Splash, navigationOptions: { title: 'SplashScreen', header: null ,gesturesEnabled:false},},
+  Splash:{ screen: Splash, navigationOptions: { title: 'SplashScreen', header: null ,gesturesEnabled:false},},
   Login:{ screen: Login, navigationOptions: { title: 'Login', header: null ,gesturesEnabled:false},},
   Register:{ screen: Register, navigationOptions: { title: 'Register', header: null ,gesturesEnabled:false},},
   Drawer:{ screen: Drawer, navigationOptions: { title: 'Drawer', header: null ,gesturesEnabled:false},},
